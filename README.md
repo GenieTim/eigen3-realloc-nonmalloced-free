@@ -55,3 +55,18 @@ allocated by thread T0 here:
 SUMMARY: AddressSanitizer: bad-free ../../../../src/libsanitizer/asan/asan_malloc_linux.cc:163 in __interceptor_realloc
 ==4495==ABORTING
 ```
+
+# SOLUTION
+
+Instruct the library to do the sanitizing, too, e.g. in lib/CMakeLists.txt, add
+
+```
+if (LEAK_ANALYSIS)
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+	set (CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+	target_link_libraries(naub_lib 
+		PRIVATE
+		-fsanitize=address
+	)
+endif()
+```
