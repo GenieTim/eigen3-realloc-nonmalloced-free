@@ -1,5 +1,7 @@
 # eigen3-realloc-nonmalloced-free
 
+**NOTE**, a solution is posted at the bottom of this file.
+
 This is a minimal reproducible example of a strange error (possibly related to compilation procedure).
 The behaviour shows an error by the AddressSanitizer in Eigen internal code, namely a "free on address which was not malloc(ed)" when trying to realloc. The free is called 16 bytes further than it should.
 
